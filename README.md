@@ -13,7 +13,7 @@ terraform init && terraform get && terraform apply -auto-approve
 ## Access to Instance
 This module uses `microfocus-demo` keypair generated from AWS. Use `microfocus-demo.pem` to SSH to the instance.
 ```
-ssh -i .ssh/microfocus-pem.ssh ec2-user@18.139.178.120
+ssh -i .ssh/microfocus-pem.ssh ec2-user@<EC2InstanceIP>
 ```
 
 ## Notes
