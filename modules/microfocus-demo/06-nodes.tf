@@ -12,7 +12,9 @@ resource "aws_eip" "microfocus-demo-eip" {
 
 resource "aws_instance" "microfocus-demo" {
   # This is a an Amazon Linux 2 AMI with encrypted volume customized for ATA AWS account.
-  ami                  = "ami-02a5672728db47f48"
+  // ami                  = "ami-02a5672728db47f48"
+  # This is a an Amazon Linux AMI with encrypted volume customized for ATA AWS account.
+  ami                  = "ami-01bbcc74d6f8488cc"
   instance_type        = "${var.amisize}"
   subnet_id            = "${aws_subnet.microfocus-demo-public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.microfocus-demo-instance-profile.id}"

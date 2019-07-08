@@ -16,6 +16,11 @@ This module uses `microfocus-demo` keypair generated from AWS. Use `microfocus-d
 ssh -i .ssh/microfocus-pem.ssh ec2-user@<EC2InstanceIP>
 ```
 
+## Micro Focus Mobile Center Installation Notes
+1. Follow the official guide [here](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm#mt-item-1)
+2. Do not use Amazon Linux 2, it will error out when installing PostgreSQL due to missing libtinfo.so.5()(64bit)
+3. Use `sudo`.
+
 ## Notes
 1. Instance type is t3.large, although [t2.large is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
 2. AWS Linux 2 AMI is used, although [AWS Linux AMI is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
