@@ -1,0 +1,17 @@
+# terraform-microfocus-demo
+A Terraform project to create compute instance for Micro Focus Demo
+
+## Prerequisite
+1. Set up `awscli`
+2. Configure AWS credentials using `aws configure` command
+
+## Getting Started
+```
+terraform init && terraform get && terraform apply -auto-approve
+```
+
+## Notes
+1. This module uses `microfocus-demo` keypair generated from AWS. Use `microfocus-demo.pem` to SSH to the instance.
+2. Instance type is t3.large, although [t2.large is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
+3. AWS Linux 2 AMI is used, although [AWS Linux AMI is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
+4. This module is improvised from [dwmkerr/terraform-aws-openshift](https://github.com/dwmkerr/terraform-aws-openshift/tree/release/okd-3.11).
