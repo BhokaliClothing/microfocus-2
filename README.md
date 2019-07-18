@@ -20,6 +20,9 @@ ssh -i .ssh/microfocus-pem.ssh ec2-user@<EC2InstanceIP>
 1. Follow the official guide [here](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm#mt-item-1)
 2. Do not use Amazon Linux 2, it will error out when installing PostgreSQL due to missing libtinfo.so.5()(64bit)
 3. Use `sudo`.
+4. Need to apply patch to support iOS 12.2 and above
+    - Mobile Center Linux Server patch: https://s3-us-west-1.amazonaws.com/hpmc/MC3.1/hotfix/3.10.00.0001/3.10.00.0001-hotfix-Linux_server_x64.zip
+    - Mobile Center Connector (Windows x64) patch: https://s3-us-west-1.amazonaws.com/hpmc/MC3.1/hotfix/3.10.00.0001/3.10.00.0001-hotfix-Windows_connector_x64.zip
 
 ## Notes
 1. Instance type is t3.large, although [t2.large is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
