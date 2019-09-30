@@ -127,7 +127,7 @@ resource "aws_security_group" "microfocus-demo-ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["113.210.203.9/32"]
   }
 
   //  Use our common tags and add a specific name.
