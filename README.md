@@ -57,10 +57,6 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     SSLCertificateKeyFile /etc/letsencrypt/live/mobilecenter.liquiddelivery.net/privkey.pem
     Include /etc/letsencrypt/options-ssl-apache.conf
     SSLProxyEngine On
-    ProxyRequests Off
-    ProxyPreserveHost On
-    ProxyPass /autopass https://localhost:5814/autopass/ nocanon
-    ProxyPassReverse /autopass https://localhost:5814/autopass/
     ```
 6. Start Apache 2.4 server
     ```
