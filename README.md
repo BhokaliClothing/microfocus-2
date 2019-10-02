@@ -21,7 +21,7 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
 ### Before Installing Micro Focus
 1. `sudo yum update`
 2. `sudo pip install gdown` (for download from Google Drive later)
-3. Install Apache 2.4
+3. ~~Install Apache 2.4~~
     ```
     # Install
     sudo yum install -y httpd24 httpd24-tools mod24_ssl
@@ -43,13 +43,14 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     sudo chown root /usr/local/bin/certbot-auto && sudo chmod 0755 /usr/local/bin/certbot-auto
 
     # Install Certificate
-    sudo /usr/local/bin/certbot-auto certonly --apache --debug -d mobilecenter.liquiddelivery.net
+    # sudo /usr/local/bin/certbot-auto certonly --apache --debug -d mobilecenter.liquiddelivery.net
+    sudo /usr/local/bin/certbot-auto certonly --standalone -d mobilecenter.liquiddelivery.net
 
     # Dry run certificate renewal
     sudo /usr/local/bin/certbot-auto renew --dry-run
 
-    # Configure auto-renewal cron job using `sudo vi /etc/crontab`
-    0 0,12 * * * python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew 
+    # Configure auto-renewal cron job using crontab
+    echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew" | sudo tee -a /etc/crontab > /dev/null
     ```
 5. Configure apache using `sudo vi /etc/httpd/conf.d/ssl.conf`
     ```
@@ -58,7 +59,7 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     Include /etc/letsencrypt/options-ssl-apache.conf
     SSLProxyEngine On
     ```
-6. Start Apache 2.4 server
+6. ~~Start Apache 2.4 server~~
     ```
     sudo service httpd start
     ```
@@ -82,30 +83,22 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
 > 2. Instance type is t3.large, although [t2.large is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
 > 3. This module is improvised from [dwmkerr/terraform-aws-openshift](https://github.com/dwmkerr/terraform-aws-openshift/tree/release/okd-3.11).
 
-Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm#mt-item-1)
+Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Content/off-prem%20AWS%20installation.htm)
 
-1. Download MC310-16862_Linux_Server
+1. Download Mobile Center 3.2
     ```
     # Install gdown (if not yet), download installation file, unzip
     sudo pip install gdown
-    gdown https://drive.google.com/uc?id=1rvpRkm0o8cZjiLJha8GBFbphFh4Unf4B
-    mkdir MC310-16862_Linux_Server && unzip -d MC310-16862_Linux_Server/ MC310-16862_Linux_Server.zip
+    gdown https://drive.google.com/uc?id=1n3vIA7jCtXvWLKapjMWAGIshpXLFrHtU
+    mkdir MC320-19152_Linux_Server && unzip -d MC320-19152_Linux_Server/ install-server-linux-x64-3.20-19152.zip
     ```
 2. Run installation
     ```
     # Install
-    sudo ./MC310-16862_Linux_Server/SERVER/install_server-x64-3.10.00.00-242.bin -DUSER_INPUT_INSTALL_AWS_MODE=1
+    sudo ./MC320-19152_Linux_Server/install_server-x64-3.20.00.00-9.bin -DUSER_INPUT_INSTALL_AWS_MODE=1
     ```
 3. `!!!` Do not use existing user -> your installation would be interrupted and cannot be completed. Let it create a new user called `mc`.
-4. Need to apply patch to support iOS 12.2 and above
-    - Mobile Center Linux Server patch
-        ```
-        wget https://s3-us-west-1.amazonaws.com/hpmc/MC3.1/hotfix/3.10.00.0001/3.10.00.0001-hotfix-Linux_server_x64.zip
-        mkdir 3.10.00.0001-hotfix-Linux_server_x64 && unzip -d 3.10.00.0001-hotfix-Linux_server_x64/ 3.10.00.0001-hotfix-Linux_server_x64.zip
-        sudo ./3.10.00.0001-hotfix-Linux_server_x64/server_patcher-x64-3.10.00.0001-294.bin
-        ```
-    - Mobile Center Connector (Windows x64) patch: [here](https://s3-us-west-1.amazonaws.com/hpmc/MC3.1/hotfix/3.10.00.0001/3.10.00.0001-hotfix-Windows_connector_x64.zip)
-5. Use certificate, https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/SSL.htm#Using
+4. Use certificate, https://admhelp.microfocus.com/mobilecenter/en/3.2/Content/SSL.htm#Using
     ```
     # Create PFX certificate
     sudo su
