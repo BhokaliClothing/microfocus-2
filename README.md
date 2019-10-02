@@ -176,7 +176,10 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
 1. When installing UFT, make sure to tick "Use DCOM for Automation Script", otherwise executing tests remotely might not work.
 
 ### Additional Notes
-#### Security Tips for Apache Server (No longer required)
+#### Security Tips for Apache Server
+
+> Note: Apache Server is no longer required as part of the solution
+
 1. Use Apache Server 2.4 (httpd24) - Because 2.2 (httpd) is no longer maintained/recommended, see http://archive.apache.org/dist/httpd/Announcement2.2.html
 2. Implement SSL using Let's Encrypt - https://letsencrypt.org/
 	Note: Configure cron job for auto cert renewal
