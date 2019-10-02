@@ -29,7 +29,7 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     # After installation set Apache to auto-start.
     sudo chkconfig httpd on
     ```
-3. Add `<VirtualHost>` by `sudo vi /etc/httpd/conf/httpd.conf`
+3. ~~Add `<VirtualHost>` by `sudo vi /etc/httpd/conf/httpd.conf`~~
     ```
     <VirtualHost *:80>
     ServerName mobilecenter.liquiddelivery.net
@@ -52,7 +52,7 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     # Configure auto-renewal cron job using crontab
     echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew" | sudo tee -a /etc/crontab > /dev/null
     ```
-5. Configure apache using `sudo vi /etc/httpd/conf.d/ssl.conf`
+5. ~~Configure apache using `sudo vi /etc/httpd/conf.d/ssl.conf`~~
     ```
     SSLCertificateFile /etc/letsencrypt/live/mobilecenter.liquiddelivery.net/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/mobilecenter.liquiddelivery.net/privkey.pem
@@ -172,6 +172,15 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
     sudo service aplsLicenseServer restart
     ```
 
-
-## UFT Installation Notes
+### UFT Installation Notes
 1. When installing UFT, make sure to tick "Use DCOM for Automation Script", otherwise executing tests remotely might not work.
+
+### Additional Notes
+#### Compliance Tips for Apache Server (No longer required)
+1. Use Apache Server 2.4 (httpd24) - Because 2.2 (httpd) is no longer maintained/recommended, see http://archive.apache.org/dist/httpd/Announcement2.2.html
+2. Implement SSL using Let's Encrypt - https://letsencrypt.org/
+	Note: Configure cron job for auto cert renewal
+3. Reconfigure all .conf files, including /etc/letsencrypt/options-ssl-apache.conf created by Let's Encrypt
+	* Update supported SSLProtocol, e.g. exclude TLSv1.0
+	* Update SSLCipherSuite, e.g. do not allow DES, 3DES, IDEA, RC2
+	* Sample reference: https://ssl-config.mozilla.org/#server=apache&server-version=2.4.39&config=intermediate
