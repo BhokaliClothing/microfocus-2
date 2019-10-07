@@ -18,8 +18,7 @@
 //   - kubernetes.io/cluster/<name>: Set to <cluster_id>, required for OpenShift >= 3.7
 //  The syntax below is ugly, but needed as we are using dynamic key names.
 locals {
-  common_tags = "${map(
-    "Project", "microfocus-demo",
-    "CreatedBy", "wai.loon.theng"
-  )}"
+  common_tags = {
+    Project                                     = "${var.project_name}"
+  }
 }

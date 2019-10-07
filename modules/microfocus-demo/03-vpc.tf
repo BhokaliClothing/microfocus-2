@@ -66,3 +66,76 @@ resource "aws_route_table_association" "microfocus-demo-public-subnet" {
   subnet_id      = "${aws_subnet.microfocus-demo-public-subnet.id}"
   route_table_id = "${aws_route_table.microfocus-demo-public.id}"
 }
+
+resource "aws_flow_log" "vpc_flow_logs" {
+  log_destination = "${aws_cloudwatch_log_group.vpc_flow_log_group.arn}"
+  iam_role_arn    = "${aws_iam_role.vpc_flow_role.arn}"
+  vpc_id          = "${aws_vpc.microfocus-demo.id}"
+  traffic_type    = "ALL"
+  depends_on      = ["aws_vpc.microfocus-demo", "aws_iam_role.vpc_flow_role", "aws_cloudwatch_log_group.vpc_flow_log_group"]
+}
+
+resource "aws_cloudwatch_log_group" "vpc_flow_log_group" {
+  name       = "${var.project_name}_vpc_flow_log_group"
+  depends_on = ["aws_vpc.microfocus-demo"]
+
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "VPC Flow Logs Group"
+    )
+  )}"
+}
+
+resource "aws_iam_role" "vpc_flow_role" {
+  name       = "${var.project_name}_vpc_flow_role"
+  depends_on = ["aws_vpc.microfocus-demo"]
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "Role for VPC Flow Logs"
+    )
+  )}"
+}
+
+resource "aws_iam_role_policy" "vpc_flow_policy" {
+  name = "${var.project_name}_vpc_flow_policy"
+  role = "${aws_iam_role.vpc_flow_role.id}"
+  depends_on = ["aws_vpc.microfocus-demo"]
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
