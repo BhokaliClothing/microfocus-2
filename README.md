@@ -39,13 +39,12 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     # Configure auto-renewal cron job using crontab
     echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew" | sudo tee -a /etc/crontab > /dev/null
     ```
-4. Verify the setup by going to https://mobilecenter.liquiddelivery.net/
-5. `sudo vi /etc/sysconfig/network`
+4. `sudo vi /etc/sysconfig/network`
     ```
     HOSTNAME=mobilecenter.liquiddelivery.net
     ```
-6. `sudo reboot`
-7. `sudo vi /etc/hosts`
+5. `sudo reboot`
+6. `sudo vi /etc/hosts`
     ```
     $ sudo cat /etc/hosts
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 mobilecenter.liquiddelivery.net
