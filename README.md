@@ -1,9 +1,11 @@
 # terraform-microfocus-demo
-A Terraform project to create compute instance for Micro Focus Demo.
+* A Terraform project to create compute instance for Micro Focus Demo.
+* The Terraform state is stored at an S3 bucket to facilitate team collaboration.
 
 ## Prerequisite
 1. Set up `awscli`
 2. Configure AWS credentials using `aws configure` command
+3. Prepare an AWS Key Pair, use the key pair name for `key_pair_name` variable.
 
 ## Getting Started
 
@@ -18,24 +20,10 @@ This module uses `microfocus-demo` keypair generated from AWS. Use `microfocus-d
 ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
 ```
 
-### Before Installing Micro Focus
+### Before Installing Micro Focus (WIP)
 1. `sudo yum update`
 2. `sudo pip install gdown` (for download from Google Drive later)
-3. ~~Install Apache 2.4~~
-    ```
-    # Install
-    sudo yum install -y httpd24 httpd24-tools mod24_ssl
-
-    # After installation set Apache to auto-start.
-    sudo chkconfig httpd on
-    ```
-3. ~~Add `<VirtualHost>` by `sudo vi /etc/httpd/conf/httpd.conf`~~
-    ```
-    <VirtualHost *:80>
-    ServerName mobilecenter.liquiddelivery.net
-    </VirtualHost>
-    ```
-4. "Let's Encrypt" using CertBot (Ref: https://stackoverflow.com/a/56640405/)
+3. "Let's Encrypt" using CertBot (Ref: https://stackoverflow.com/a/56640405/)
     ```
     # Download CertBot
     wget https://dl.eff.org/certbot-auto
@@ -43,8 +31,7 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     sudo chown root /usr/local/bin/certbot-auto && sudo chmod 0755 /usr/local/bin/certbot-auto
 
     # Install Certificate
-    # sudo /usr/local/bin/certbot-auto certonly --apache --debug -d mobilecenter.liquiddelivery.net
-    sudo /usr/local/bin/certbot-auto certonly --standalone -d mobilecenter.liquiddelivery.net
+    sudo /usr/local/bin/certbot-auto certonly --standalone --debug -d mobilecenter.liquiddelivery.net
 
     # Dry run certificate renewal
     sudo /usr/local/bin/certbot-auto renew --dry-run
@@ -52,24 +39,13 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     # Configure auto-renewal cron job using crontab
     echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew" | sudo tee -a /etc/crontab > /dev/null
     ```
-5. ~~Configure apache using `sudo vi /etc/httpd/conf.d/ssl.conf`~~
-    ```
-    SSLCertificateFile /etc/letsencrypt/live/mobilecenter.liquiddelivery.net/fullchain.pem
-    SSLCertificateKeyFile /etc/letsencrypt/live/mobilecenter.liquiddelivery.net/privkey.pem
-    Include /etc/letsencrypt/options-ssl-apache.conf
-    SSLProxyEngine On
-    ```
-6. ~~Start Apache 2.4 server~~
-    ```
-    sudo service httpd start
-    ```
-7. Verify the setup by going to https://mobilecenter.liquiddelivery.net/
-8. `sudo vi /etc/sysconfig/network`
+4. Verify the setup by going to https://mobilecenter.liquiddelivery.net/
+5. `sudo vi /etc/sysconfig/network`
     ```
     HOSTNAME=mobilecenter.liquiddelivery.net
     ```
-9. `sudo reboot`
-10. `sudo vi /etc/hosts`
+6. `sudo reboot`
+7. `sudo vi /etc/hosts`
     ```
     $ sudo cat /etc/hosts
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 mobilecenter.liquiddelivery.net
