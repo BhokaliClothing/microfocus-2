@@ -29,7 +29,7 @@ data "aws_ami" "centos_7" {
 data "aws_ami" "rhel7_5" {
   most_recent = true
 
-  owners = ["309956199498"] // Red Hat's account ID.
+  owners = ["679593333241"] // Red Hat's account ID.
 
   filter {
     name   = "architecture"
@@ -56,7 +56,7 @@ data "aws_ami" "rhel7_5" {
 data "aws_ami" "amazonlinux" {
   most_recent = true
 
-  owners = ["137112412989"]
+  owners = ["679593333241"]
 
   filter {
     name   = "architecture"

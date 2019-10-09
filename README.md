@@ -17,13 +17,16 @@ terraform init && terraform get && terraform apply -auto-approve
 ### Access to Instance
 This module uses `microfocus-demo` keypair generated from AWS. Use `microfocus-demo.pem` to SSH to the instance.
 ```
-ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
+ssh -i ~/.ssh/microfocus-demo.pem centos@<EC2InstanceIP>
 ```
 
 ### Before Installing Micro Focus (WIP)
 1. `sudo yum update`
-2. `sudo pip install gdown` (for download from Google Drive later)
-3. "Let's Encrypt" using CertBot (Ref: https://stackoverflow.com/a/56640405/)
+2. `sudo yum install epel-release` (software packages for Linux distribution including CentOS)
+3. `sudo yum install wget`
+4. `sudo yum -y install python-pip` (to install pip)
+5. `sudo pip install gdown` (for download from Google Drive later)
+6. "Let's Encrypt" using CertBot (Ref: https://stackoverflow.com/a/56640405/)
     ```
     # Download CertBot
     wget https://dl.eff.org/certbot-auto
@@ -39,12 +42,8 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
     # Configure auto-renewal cron job using crontab
     echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew" | sudo tee -a /etc/crontab > /dev/null
     ```
-4. `sudo vi /etc/sysconfig/network`
-    ```
-    HOSTNAME=mobilecenter.liquiddelivery.net
-    ```
-5. `sudo reboot`
-6. `sudo vi /etc/hosts`
+7. `sudo hostnamectl set-hostname mobilecenter.liquiddelivery.net`
+8. `sudo vi /etc/hosts`
     ```
     $ sudo cat /etc/hosts
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 mobilecenter.liquiddelivery.net
@@ -57,6 +56,7 @@ ssh -i ~/.ssh/microfocus-demo.pem ec2-user@<EC2InstanceIP>
 > 1. Do not use Amazon Linux 2, it will error out when installing PostgreSQL due to missing libtinfo.so.5()(64bit)
 > 2. Instance type is t3.large, although [t2.large is recommended by Micro Focus](https://admhelp.microfocus.com/mobilecenter/en/3.1/Content/off-prem%20AWS%20installation.htm).
 > 3. This module is improvised from [dwmkerr/terraform-aws-openshift](https://github.com/dwmkerr/terraform-aws-openshift/tree/release/okd-3.11).
+> 4. Do not start the service after installation, needed to rename "awsChangePassword.sh" to other name first to avoid hostname(FQDN) from changing.
 
 Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Content/off-prem%20AWS%20installation.htm)
 
@@ -85,7 +85,15 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
     sudo ./importCA.sh
     # /etc/letsencrypt/live/mobilecenter.liquiddelivery.net/certificate.pfx
     ```
-
+5. Rename awsChangePassword.sh
+   ```
+   sudo mv /opt/mc/server/bin/awsChangePassword.sh /opt/mc/server/bin/awsChangePassword_bak.sh
+   ```
+6. Run Micro Focus Service
+   ```
+   sudo service mc start
+   ```
+   
 ### Installing AutoPass
 1. Download from Google Drive, unzip, execute
     ```
