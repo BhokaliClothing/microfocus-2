@@ -154,6 +154,19 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
     ```
     sudo service aplsLicenseServer restart
     ```
+    
+### Updating TSL version
+1. sudo su 
+	- make yourself as root
+2. ls -la/etc/nginx
+3. nginx -t
+	-check if it's successful
+4. vi /etc/nginx/nginx.conf
+5. #original line
+	-commented the original line and paste in the new line
+6. :wq
+	- save and out from the file
+
 
 ### UFT Installation Notes
 1. When installing UFT, make sure to tick "Use DCOM for Automation Script", otherwise executing tests remotely might not work.
