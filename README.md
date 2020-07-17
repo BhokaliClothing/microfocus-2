@@ -169,13 +169,13 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
 
 Clear buffer and caches 
 1. to free pagecache
-# echo 1 > /proc/sys/vm/drop_caches
+      echo 1 > /proc/sys/vm/drop_caches
 
 2. To free dentries and inodes:
-# echo 2 > /proc/sys/vm/drop_caches
+      echo 2 > /proc/sys/vm/drop_caches
 
 3. To free pagecache, dentries and inodes:
-# echo 3 > /proc/sys/vm/drop_caches
+      echo 3 > /proc/sys/vm/drop_caches
 
 
 ### UFT Installation Notes
