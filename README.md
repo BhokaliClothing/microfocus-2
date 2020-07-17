@@ -167,6 +167,16 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
 6. :wq
 	- save and out from the file
 
+Clear buffer and caches 
+1. to free pagecache
+# echo 1 > /proc/sys/vm/drop_caches
+
+2. To free dentries and inodes:
+# echo 2 > /proc/sys/vm/drop_caches
+
+3. To free pagecache, dentries and inodes:
+# echo 3 > /proc/sys/vm/drop_caches
+
 
 ### UFT Installation Notes
 1. When installing UFT, make sure to tick "Use DCOM for Automation Script", otherwise executing tests remotely might not work.
