@@ -167,7 +167,7 @@ Official Guide: [here](https://admhelp.microfocus.com/mobilecenter/en/3.2/Conten
 6. :wq
 	- save and out from the file
 
-Clear buffer and caches 
+###Clear buffer and caches 
 1. to free pagecache
       echo 1 > /proc/sys/vm/drop_caches
 
